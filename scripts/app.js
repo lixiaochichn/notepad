@@ -35,6 +35,20 @@ document.addEventListener('DOMContentLoaded', function () {
         $rightbutton.classList.add('fa-pencil-square-o');
     });
 
+    $rightbutton.addEventListener('click', function () {
+        $padinner.classList.remove('flip');
+        $padinner.classList.add('home');
+
+        $leftbutton.classList.remove('fa-arrow-left');
+        $leftbutton.classList.add('fa-cog');
+
+        $rightbutton.classList.remove('fa-trash');
+        $rightbutton.classList.add('fa-pencil-square-o');
+    });
+
+
+
+
     $facog.addEventListener('click', function () {
         $facog.style.transform = 'rotateZ(180deg)';
         setTimeout((function () {
