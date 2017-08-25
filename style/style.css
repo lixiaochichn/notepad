@@ -6,7 +6,8 @@
     overflow: none;
 }
 
-.header {
+.header,
+.set-header {
     height: 60px;
     background-color: #705E50;
     color: #FFFFFF;
@@ -16,6 +17,7 @@
     justify-content: space-between;
     box-shadow: 0 8px 20px -10px grey;
     cursor: pointer;
+    outline: none;
 }
 
 .fa {
@@ -165,4 +167,53 @@ textarea {
 .translate3d {
     transform: scale(0);
     transition: .5s;
+}
+
+.fa-trash {
+    color: #FF6561;
+}
+
+.set-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.set-body>.fa-sliders {
+    font-size: 300px;
+    margin: 100px;
+    color: WhiteSmoke;
+}
+
+.set-view {
+    width: 100%;
+    position: fixed;
+    z-index: 20;
+    background-color: white;
+    transition: .5s;
+}
+
+.set-hidden {
+    transform: translateX(-100%);
+}
+
+.set-show {
+    transform: translateX(0);
+}
+
+.app {
+    height: 100%;
+    /*perspective: 1000px;*/
+    position: relative;
+    /*overflow: hidden;*/
+    /*手机网站点击链接触发颜色块的问题解决*/
+    -webkit-tap-highlight-color: transparent;
+}
+
+.main-view {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
 }

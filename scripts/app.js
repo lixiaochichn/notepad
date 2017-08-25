@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // console.log('aaa');
 
     let $padinner = document.querySelector('.padinner');
     let $padfont = document.querySelector('.padfont');
@@ -11,8 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let $padbody = document.querySelector('.padbody');
     let $padcover = document.querySelectorAll('.padcover');
     let $centertitle = document.querySelector('.centertitle');
+    let $setview = document.querySelector('.set-view');
+    let $setheader = document.querySelector('.set-header');
     let $parent;
     let num = 4;
+    let weeks = ['日', '一', '二', '三', '四', '五', '六'];
+
 
 
 
@@ -28,8 +31,23 @@ document.addEventListener('DOMContentLoaded', function () {
         // console.log($parent);
         if (target.matches('.padlist')) {
             editmode($parent);
+            mydate();
         };
     }, true);
+
+    function mydate() {
+        var myDate = new Date();
+        let year = myDate.getFullYear();
+        let week = myDate.getDay();
+        let month = myDate.getMonth();
+        let day = myDate.getDate();
+        let hour = myDate.getHours();
+        let minute = myDate.getMinutes();
+        let second = myDate.getSeconds();
+        let times = `星期${weeks[week]} ${year}年${month+1}月${day}日 ${hour}:${minute}:${second}`;
+        // console.log(times);
+        return times;
+    };
 
     function editmode(targetlist) {
         $centertitle.innerHTML = `<div class="centertitle">Edit</div>`;
@@ -55,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function listmode() {
         $centertitle.innerHTML = `<div class="centertitle">All</div>`;
-        
+
         $leftbutton.classList.remove('fa-arrow-left');
         $leftbutton.classList.add('fa-cog');
 
@@ -71,14 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
 
-    // $padfont.addEventListener('click', function () {
-    //     $padinner.classList.remove('home');
-    //     $padinner.classList.add('flip');
-    //     $leftbutton.classList.remove('fa-cog');
-    //     $leftbutton.classList.add('fa-arrow-left');
-    //     $rightbutton.classList.remove('fa-pencil-square-o');
-    //     $rightbutton.classList.add('fa-trash');
-    // });
 
 
     $header.addEventListener('click', function (event) {
@@ -90,13 +100,26 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout((function () {
                 $facog.style.transform = 'rotateZ(0deg)';
             }), 500);
+            $setview.classList.remove('set-hidden');
+            $setview.classList.add('set-show');
+
         };
 
         //点击箭头返回
         if (target.matches('.fa-arrow-left')) {
+            if ($parent.children[1].value === '') {
+                // console.log('null');
+                detele($parent);
+
+                listmode();
+                return;
+            }
+
             $parent.classList.remove('flip');
             $parent.classList.add('home');
-
+            $parent.children[0].children[0].innerHTML = `${mydate()}`;
+            $parent.children[1].innerHTML = $parent.children[1].value;
+            $parent.children[0].children[1].innerHTML = $parent.children[1].value;
             listmode();
         };
 
@@ -104,15 +127,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (target.matches('.fa-pencil-square-o')) {
             let html = `<div class="padlist padcover order">
-            <div class="padlist padinner home">
-                <div class="padlist padfont">
-                    <div class="padlist fontdate">星期五 7月28日 下午8：23</div>
-                    <div class="padlist fonttitle">使用教程${num}</div>
-                </div>
-                <textarea class="padback">${num}正因为人生没有意义，才值得一过。人生、宇宙这些东西不能深想。你想想，一个人来了几十年之后，消失了，就像没有存在一样，其实挺可怕的。但一个有灵魂的人，是不可能不想这些事情的。我现在做的就是如何应对‘生命无意义’这件事。</textarea>
-            </div>
-        </div>`;
-            
+                    <div class="padlist padinner home">
+                    <div class="padlist padfont">
+                    <div class="padlist fontdate">${mydate()}</div>
+                    <div class="padlist fonttitle"></div>
+                    </div><textarea class="padback"></textarea></div></div>`;
+
             $padbody.innerHTML = html.substring(0) + $padbody.innerHTML;
             num++;
             $padcover = document.querySelectorAll('.padcover');
@@ -129,20 +149,47 @@ document.addEventListener('DOMContentLoaded', function () {
         if (target.matches('.fa-trash')) {
             // $parent.classList.remove('flip');
             // $parent.classList.add('home');
-            $parent.parentElement.classList.add('translate3d');
-            setTimeout(function () {
-                $parent.parentElement.parentElement.removeChild($parent.parentElement);
-            }, 490);
+            detele($parent);
             listmode();
+
         };
 
+    });
 
+    function detele(target) {
+        target.parentElement.classList.add('translate3d');
+        setTimeout(function () {
+            target.parentElement.parentElement.removeChild(target.parentElement);
+        }, 490);
+    };
+
+
+    $setheader.addEventListener('click', function (event) {
+        let target = event.target;
+        if (target.matches('.fa-arrow-left') || target.matches('.fa-check-circle')) {
+            $setview.classList.remove('set-show');
+            $setview.classList.add('set-hidden');
+        };
     });
 
 
 
 
 
+console.log(`
+      ___           ___           ___           ___     
+     /\\__\\         /\\__\\         /\\__\\         /\\  \\    
+    /:/  /        /:/  /        /::|  |        \\:\\  \\   
+   /:/__/        /:/  /        /:|:|  |         \\:\\  \\  
+  /::\\  \\ ___   /:/  /  ___   /:/|:|  |__       /::\\  \\ 
+ /:/\\:\\  /\\__\\ /:/__/  /\\__\\ /:/ |:| /\\__\\     /:/\\:\\__\\
+ \\/__\\:\\/:/  / \\:\\  \\ /:/  / \\/__|:|/:/  /    /:/  \\/__/
+      \\::/  /   \\:\\  /:/  /      |:/:/  /    /:/  /     
+      /:/  /     \\:\\/:/  /       |::/  /     \\/__/      
+     /:/  /       \\::/  /        /:/  /                 
+     \\/__/         \\/__/         \\/__/                  
+\n李晓驰(苏州)，应聘前端开发工程师 lixiaochichn@gmail.com
+`);
 
 
-})
+});
